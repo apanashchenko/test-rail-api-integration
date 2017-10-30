@@ -1,0 +1,32 @@
+dist: trusty
+sudo: required
+
+language: java
+cache:
+  directories:
+  - $HOME/.gradle
+
+jdk:
+  - oraclejdk8
+
+before_install:
+  - chmod +x gradlew
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+script:
+  - ./gradlew clean build jacocoTestReport
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+  - cd docs
+  - git init
+  - git config user.name "${GH_USER_NAME}"
+  - git config user.email "{GH_USER_EMAIL}"
+  - git add . ; git commit -m "Deploy docs to GitHub Pages"
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:gh-pages > /dev/null 2>&1
+
+notifications:
+  email:
+    recipients:
+      - panashchenko89@gmail.com

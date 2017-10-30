@@ -1,0 +1,43 @@
+group 'test-rail-api-integration'
+version '1.0-SNAPSHOT'
+
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+
+    test {
+        useTestNG()
+        testLogging {
+            events "passed", "skipped", "failed"
+            exceptionFormat = 'full'
+            showStandardStreams = true
+        }
+        testLogging {
+            showStandardStreams = true
+            exceptionFormat "full"
+        }
+    }
+
+    jacoco {
+        toolVersion = "0.7.6.201602180812"
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+            csv.enabled true
+            html.destination file("${buildDir}/jacocoHtml")
+        }
+    }
+}
+
