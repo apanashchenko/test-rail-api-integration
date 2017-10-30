@@ -33,10 +33,12 @@ subprojects {
     }
 
     jacocoTestReport {
+        executionData = files("${project.buildDir}/jacoco/test.exec")
         reports {
+            xml.destination "${buildDir}/reports/jacoco/report.xml"
             xml.enabled true
-            csv.enabled true
-            html.destination file("${buildDir}/jacocoHtml")
+            html.enabled true
+            html.destination "${buildDir}/jacocoHtml"
         }
     }
 }
