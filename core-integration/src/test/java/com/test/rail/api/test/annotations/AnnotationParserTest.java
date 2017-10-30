@@ -4,6 +4,8 @@ import com.test.rail.api.annotation.TestCaseId;
 import com.test.rail.api.annotation.TestCaseIds;
 import com.test.rail.api.parser.AnnotationParser;
 import com.test.rail.api.test.classes.*;
+import org.powermock.reflect.Whitebox;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.lang.annotation.Annotation;
@@ -17,7 +19,13 @@ import static org.testng.Assert.assertEquals;
  */
 public class AnnotationParserTest {
 
-    private AnnotationParser annotationParser = new AnnotationParser();
+
+    private AnnotationParser annotationParser;
+
+    @BeforeMethod
+    public void setUp() throws Exception {
+        annotationParser = Whitebox.invokeConstructor(AnnotationParser.class);
+    }
 
     @Test
     public void testCaseIdSingleAnnotationsTest() {
