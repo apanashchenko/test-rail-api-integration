@@ -1,7 +1,7 @@
-package com.testng.lisener;
+package com.testng.listener;
 
 import com.test.rail.api.ITestRailResultStatus;
-import com.test.rail.api.integration.testng.lisener.impl.TestRailStatusITestNgImpl;
+import com.test.rail.api.integration.testng.listener.impl.TestRailStatusITestNgImpl;
 import org.testng.annotations.Test;
 import org.testng.internal.TestResult;
 

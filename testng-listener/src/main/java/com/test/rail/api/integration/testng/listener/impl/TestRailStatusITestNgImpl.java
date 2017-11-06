@@ -1,4 +1,4 @@
-package com.test.rail.api.integration.testng.lisener.impl;
+package com.test.rail.api.integration.testng.listener.impl;
 
 
 import com.google.common.collect.ImmutableMap;

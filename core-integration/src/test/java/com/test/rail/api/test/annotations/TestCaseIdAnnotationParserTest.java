@@ -1,7 +1,7 @@
 package com.test.rail.api.test.annotations;
 
 import com.test.rail.api.parser.TestCaseIdParser;
-import com.test.rail.api.test.classes.*;
+import com.test.rail.api.test.example.*;
 import org.powermock.reflect.Whitebox;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

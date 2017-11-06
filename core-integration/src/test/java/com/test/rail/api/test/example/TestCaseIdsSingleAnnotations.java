@@ -1,4 +1,4 @@
-package com.test.rail.api.test.classes;
+package com.test.rail.api.test.example;
 
 import com.test.rail.api.annotation.DefectId;
 import com.test.rail.api.annotation.DefectIds;

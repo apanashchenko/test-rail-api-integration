@@ -10,4 +10,7 @@ dependencies {
     compile project(":core-integration")
     // https://mvnrepository.com/artifact/org.testng/testng
     compile group: 'org.testng', name: 'testng', version: '6.11'
+    // https://mvnrepository.com/artifact/io.qameta.allure/allure-testng
+    compile group: 'io.qameta.allure', name: 'allure-testng', version: '2.0-BETA19'
+
 }
