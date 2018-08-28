@@ -6,7 +6,6 @@ import com.test.rail.api.models.Run;
 import com.test.rail.api.models.Test;
 
 import java.io.IOException;
-import java.lang.annotation.Documented;
 import java.util.List;
 
 /**

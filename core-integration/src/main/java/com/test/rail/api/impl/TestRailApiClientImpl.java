@@ -10,11 +10,9 @@ import com.test.rail.api.models.Test;
 import com.test.rail.api.service.TestRailService;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.List;
 
 import static com.test.rail.api.RestClient.createService;
-import static com.test.rail.api.conf.ConfigLoader.load;
 
 /**
  * Created by alpa on 10/25/17
@@ -31,15 +29,8 @@ public class TestRailApiClientImpl implements ITestRailApiClient {
             synchronized (TestRailApiClientImpl.class) {
                 localInstance = INSTANCE;
                 if (localInstance == null) {
-//                    try {
-//                        TODO fix can't ping test rail host
-//                        checkIsHostReachable();
-
                     INSTANCE = localInstance = new TestRailApiClientImpl();
                     TEST_RAIL_SERVICE = createService(TestRailService.class);
-//                    } catch (TestRailException e) {
-//                        e.printStackTrace();
-//                    }
                 }
             }
         }
@@ -87,17 +78,4 @@ public class TestRailApiClientImpl implements ITestRailApiClient {
         }
     }
 
-
-    private static void checkIsHostReachable() throws TestRailException {
-        boolean isReachable = false;
-        String host = load().testRailHost();
-        try {
-            isReachable = InetAddress.getByName(host).isReachable(DEFAULT_TIMEOUT);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (!isReachable) {
-            throw new TestRailException(String.format("Can't connect to host %s!", host));
-        }
-    }
 }
