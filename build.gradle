@@ -6,6 +6,7 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
 
+    version = '1.0-snapshot'
     sourceCompatibility = 1.8
 
     repositories {
@@ -35,10 +36,18 @@ subprojects {
     jacocoTestReport {
         executionData = files("${project.buildDir}/jacoco/test.exec")
         reports {
-            xml.destination "${buildDir}/reports/jacoco/report.xml"
+            xml.destination file("${buildDir}/reports/jacoco/report.xml")
             xml.enabled true
             html.enabled true
-            html.destination "${buildDir}/jacocoHtml"
+            html.destination file("${buildDir}/jacocoHtml")
+        }
+    }
+
+    jar {
+        from {
+            (configurations.runtime).collect {
+                it.isDirectory() ? it : zipTree(it)
+            }
         }
     }
 }
