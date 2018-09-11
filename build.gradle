@@ -1,54 +1,69 @@
-group 'test-rail-api-integration'
-version '1.0-SNAPSHOT'
+plugins {
+    id 'java-library'
+    id 'maven'
+    id 'jacoco'
+//    id 'io.franzbecker.gradle-lombok' version '1.14'
+
+}
+
+//lombok {
+//    version = "1.18.2"
+//    sha256 = "" // skip verifyLombok task
+//}
+
+group = 'test-rail-api'
+archivesBaseName = 'core-tra-integration'
+version = '1.0-SNAPSHOT'
 
 
-allprojects {
-    apply plugin: 'java'
-    apply plugin: 'jacoco'
 
-    version = '1.0-snapshot'
-    sourceCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_1_8
 
-    repositories {
-        mavenCentral()
+
+test {
+    useTestNG()
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat = 'full'
+        showStandardStreams = true
     }
 }
 
-subprojects {
 
-    test {
-        useTestNG()
-        testLogging {
-            events "passed", "skipped", "failed"
-            exceptionFormat = 'full'
-            showStandardStreams = true
-        }
-        testLogging {
-            showStandardStreams = true
-            exceptionFormat "full"
-        }
-    }
-
-    jacoco {
-        toolVersion = "0.7.6.201602180812"
-    }
-
-    jacocoTestReport {
-        executionData = files("${project.buildDir}/jacoco/test.exec")
-        reports {
-            xml.destination file("${buildDir}/reports/jacoco/report.xml")
-            xml.enabled true
-            html.enabled true
-            html.destination file("${buildDir}/jacocoHtml")
-        }
-    }
-
-    jar {
-        from {
-            (configurations.runtime).collect {
-                it.isDirectory() ? it : zipTree(it)
-            }
+jar {
+    from {
+        (configurations.runtime).collect {
+            it.isDirectory() ? it : zipTree(it)
         }
     }
 }
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.3.0'
+    compile group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.3.0'
+    compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.9.0'
+    compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '3.9.0'
+
+    compileOnly 'org.projectlombok:lombok:1.18.2'
+    testCompileOnly 'org.projectlombok:lombok:1.18.2'
+    annotationProcessor 'org.projectlombok:lombok:1.18.2'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.2'
+
+    compile group: 'org.aeonbits.owner', name: 'owner-java8', version: '1.0.9'
+    compile group: 'com.google.guava', name: 'guava', version: '23.2-jre'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
+    compile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.testng', name: 'testng', version: '6.11'
+    compile group: 'io.qameta.allure', name: 'allure-junit4', version: '2.0-BETA19'
+
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
+    testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.0-beta.5'
+
+}
+
 

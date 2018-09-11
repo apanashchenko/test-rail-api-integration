@@ -1,3 +1,2 @@
 rootProject.name = 'test-rail-api-integration'
-include 'core-integration', 'testng-listener', 'junit4-rule-and-listener'
 
