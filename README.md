@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/apanashchenko/test-rail-api-integration.svg?branch=master)](https://travis-ci.org/apanashchenko/test-rail-api-integration)
+
+
 ## TestNg + TestRail sample.
 
 This sample shows to you how to change tests statuses of TestRail test run from your automation tests.
