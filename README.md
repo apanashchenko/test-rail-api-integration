@@ -42,7 +42,7 @@ So, when you already has all necessary values, you can combine all parts togethe
     test.rail.project.id=37  
     test.rail.master.suite.id=3734  
     test.rail.run.id=6347  
-    post.test.rail.result=false  
+    post.test.rail.result=true
     use.existing.test.run.id=true
 
 ### Test class sample (according to screenshots):
@@ -56,10 +56,10 @@ So, when you already has all necessary values, you can combine all parts togethe
     @Listeners({TestRailTestNGListener.class})  
     public class TestRailSample {  
     
-    @TestCaseId(id=6894359)  
-    @Test  
-    public void sampleTest(){  
-    /*your tests actions*/  
-    }  
+        @TestCaseId(id=6894359)
+        @Test
+        public void sampleTest(){
+        /*your tests actions*/
+        }
      
     }
