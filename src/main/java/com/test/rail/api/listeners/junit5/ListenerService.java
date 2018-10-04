@@ -69,7 +69,7 @@ public class ListenerService {
         TestCaseIdParser testCaseIdParser = new TestCaseIdParser();
         List<Integer> tesCasesIds = testCaseIdParser.getTestCaseIdValue(method.getDeclaredAnnotations());
 
-        if (/*description.isTest() && */!tesCasesIds.isEmpty() /*&& ignore == null*/) {
+        if (!tesCasesIds.isEmpty()) {
             LOG.info(String.format("Start post result to %s...", load().testRailHost()));
             DefectIdParser defectIdParser = new DefectIdParser();
 
@@ -78,16 +78,16 @@ public class ListenerService {
             String testMethodName = method.getName();
             String version = "1.0";
             String commentsPrefix = "Auto test that has been executed: ";
-            String commentClassName = method.getClass().getName();
+            String commentClassName =  method.getDeclaringClass().getName();
 
             com.test.rail.api.models.Result testResults = new com.test.rail.api.models.Result();
             testResults.setStatusId(testRailStatus);
 
             if (context.getExecutionException().isPresent()) {
                 testResults.setComment(String.format("%s %s, failed because of %s", commentsPrefix,
-                        commentClassName + testMethodName, context.getExecutionException().get().getMessage()));
+                        commentClassName + "." + testMethodName, context.getExecutionException().get().getMessage()));
             } else {
-                testResults.setComment(commentsPrefix + commentClassName + testMethodName);
+                testResults.setComment(commentsPrefix + commentClassName + "." + testMethodName);
             }
             testResults.setVersion(version);
             if (!defectIds.isEmpty()) {
