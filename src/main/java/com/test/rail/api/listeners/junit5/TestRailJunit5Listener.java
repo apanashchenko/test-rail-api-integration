@@ -4,7 +4,7 @@ import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-public class TestRailJunit5AllureListener implements AfterTestExecutionCallback, BeforeAllCallback {
+public class TestRailJunit5Listener implements AfterTestExecutionCallback, BeforeAllCallback {
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
@@ -13,6 +13,7 @@ public class TestRailJunit5AllureListener implements AfterTestExecutionCallback,
 
     @Override
     public void afterTestExecution(ExtensionContext context) throws Exception {
-        ListenerService.getInstance().sendAllureResultToTestRail(context);
+        ListenerService.getInstance().sendResultToTestRail(context);
     }
+
 }

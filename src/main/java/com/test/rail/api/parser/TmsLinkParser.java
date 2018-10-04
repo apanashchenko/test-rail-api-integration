@@ -1,7 +1,5 @@
-package com.test.rail.api.listeners.testng;
+package com.test.rail.api.parser;
 
-
-import com.test.rail.api.parser.AnnotationParser;
 import io.qameta.allure.TmsLink;
 import io.qameta.allure.TmsLinks;
 

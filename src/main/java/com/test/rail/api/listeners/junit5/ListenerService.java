@@ -6,6 +6,7 @@ import com.test.rail.api.impl.TestRailResultsSenderImpl;
 import com.test.rail.api.impl.TestRailRunImpl;
 import com.test.rail.api.parser.DefectIdParser;
 import com.test.rail.api.parser.TestCaseIdParser;
+import com.test.rail.api.parser.TmsLinkParser;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -28,7 +29,6 @@ public class ListenerService {
             TestRailResultsSenderImpl.getInstance(TestRailApiClientImpl.getInstance(), new TestRailRunImpl());
     private ListenerAction listenerAction;
     private static ListenerService INSTANCE;
-
 
     public static ListenerService getInstance() {
         ListenerService localInstance = INSTANCE;
@@ -62,41 +62,47 @@ public class ListenerService {
     }
 
     public void sendResultToTestRail(ExtensionContext context) {
-        if (!load().postTestRailResult()) return;
-
-        Method method = context.getRequiredTestMethod();
-        int testRailStatus = getStatus(context);
         TestCaseIdParser testCaseIdParser = new TestCaseIdParser();
-        List<Integer> tesCasesIds = testCaseIdParser.getTestCaseIdValue(method.getDeclaredAnnotations());
+        List<Integer> tesCasesIds = testCaseIdParser.getTestCaseIdValue(context.getRequiredTestMethod().getDeclaredAnnotations());
+        processTestMethodExecutionResult(context, tesCasesIds);
+    }
 
-        if (!tesCasesIds.isEmpty()) {
-            LOG.info(String.format("Start post result to %s...", load().testRailHost()));
-            DefectIdParser defectIdParser = new DefectIdParser();
+    public void sendAllureResultToTestRail(ExtensionContext context) {
+        TmsLinkParser tmsLinkParser = new TmsLinkParser();
+        List<Integer> tesCasesIds = tmsLinkParser.getTmsLinkValue(context.getRequiredTestMethod().getDeclaredAnnotations());
+        processTestMethodExecutionResult(context, tesCasesIds);
+    }
 
-            List<String> defectIds = defectIdParser.getDefectIdValue(method.getDeclaredAnnotations());
+    private void processTestMethodExecutionResult(ExtensionContext context, List<Integer> ids){
+        if (!load().postTestRailResult()) return;
+        LOG.info(String.format("Start post result to %s...", load().testRailHost()));
+        int testRailStatus = getStatus(context);
+        Method method = context.getRequiredTestMethod();
 
-            String testMethodName = method.getName();
-            String version = "1.0";
-            String commentsPrefix = "Auto test that has been executed: ";
-            String commentClassName =  method.getDeclaringClass().getName();
+        DefectIdParser defectIdParser = new DefectIdParser();
+        List<String> defectIds = defectIdParser.getDefectIdValue(method.getDeclaredAnnotations());
 
-            com.test.rail.api.models.Result testResults = new com.test.rail.api.models.Result();
-            testResults.setStatusId(testRailStatus);
+        String testMethodName = method.getName();
+        String version = "1.0";
+        String commentsPrefix = "Auto test that has been executed: ";
+        String commentClassName =  method.getDeclaringClass().getName();
 
-            if (context.getExecutionException().isPresent()) {
-                testResults.setComment(String.format("%s %s, failed because of %s", commentsPrefix,
-                        commentClassName + "." + testMethodName, context.getExecutionException().get().getMessage()));
-            } else {
-                testResults.setComment(commentsPrefix + commentClassName + "." + testMethodName);
-            }
-            testResults.setVersion(version);
-            if (!defectIds.isEmpty()) {
-                testResults.setDefects(StringUtils.join(defectIds, ','));
-            }
+        com.test.rail.api.models.Result testResults = new com.test.rail.api.models.Result();
+        testResults.setStatusId(testRailStatus);
 
-            listenerAction.sendResult(tesCasesIds, testResults, testMethodName);
-            LOG.info(String.format("Finish post result to %s...", load().testRailHost()));
+        if (context.getExecutionException().isPresent()) {
+            testResults.setComment(String.format("%s %s, failed because of %s", commentsPrefix,
+                    commentClassName + "." + testMethodName, context.getExecutionException().get().getMessage()));
+        } else {
+            testResults.setComment(commentsPrefix + commentClassName + "." + testMethodName);
         }
+        testResults.setVersion(version);
+        if (!defectIds.isEmpty()) {
+            testResults.setDefects(StringUtils.join(defectIds, ','));
+        }
+
+        listenerAction.sendResult(ids, testResults, testMethodName);
+        LOG.info(String.format("Finish post result to %s...", load().testRailHost()));
     }
 
     private int getStatus(ExtensionContext context) {
