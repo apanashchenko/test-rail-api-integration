@@ -1,4 +1,5 @@
 package com.test.rail.api.test.junit5;
 
-public class TestStatusTest {
+//TODO
+public class TestJunit5Extension {
 }

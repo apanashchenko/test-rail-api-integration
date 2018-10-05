@@ -63,3 +63,88 @@ So, when you already has all necessary values, you can combine all parts togethe
         }
      
     }
+
+## Junit5 sample
+
+### Junit5 Allure @TmsLink
+
+    package com.test.rail.api.test.example;
+    import com.test.rail.api.listeners.junit5.TestRailJunit5AllureListener;
+    import io.qameta.allure.TmsLink;
+    import org.junit.jupiter.api.extension.ExtendWith;
+
+    @ExtendWith({TestRailJunit5AllureListener.class})
+    public class TmsLinkJunit5AllureTmsLinkSingleAnnotations {
+
+		@TmsLink("1")
+		@Test
+    	public void example(){
+
+    	}
+
+    }
+
+### Junit5 Allure @TmsLinks
+
+    package com.test.rail.api.test.example;
+
+    import com.test.rail.api.listeners.junit5.TestRailJunit5AllureListener;
+    import io.qameta.allure.TmsLink;
+    import io.qameta.allure.TmsLinks;
+    import org.junit.jupiter.api.extension.ExtendWith;
+
+    @ExtendWith({TestRailJunit5AllureListener.class})
+    public class TmsLinkJunit5AllureTmsLinkMultipleAnnotations {
+
+        @TmsLinks({
+                @TmsLink("1"),
+                @TmsLink("2"),
+                @TmsLink("3")
+        })
+		@Test
+        public void example(){
+
+        }
+
+    }
+
+### Junit5 @TestCaseId
+
+    package com.test.rail.api.test.example;
+
+    import com.test.rail.api.annotation.TestCaseId;
+    import com.test.rail.api.listeners.junit5.TestRailJunit5Listener;
+    import org.junit.jupiter.api.extension.ExtendWith;
+
+    @ExtendWith({TestRailJunit5Listener.class})
+    public class TestCaseIdJunit5SingleAnnotation {
+
+        @TestCaseId(id=1)
+        public void example(){
+
+        }
+
+    }
+
+### Junit5 @TestCaseIds
+
+    package com.test.rail.api.test.example;
+
+    import com.test.rail.api.annotation.TestCaseId;
+    import com.test.rail.api.annotation.TestCaseIds;
+    import com.test.rail.api.listeners.junit5.TestRailJunit5Listener;
+    import org.junit.jupiter.api.extension.ExtendWith;
+
+    @ExtendWith({TestRailJunit5Listener.class})
+    public class TestCaseIdJunit5MultipleAnnotation {
+
+        @TestCaseIds({
+                @TestCaseId(id = 5),
+                @TestCaseId(id = 6),
+                @TestCaseId(id = 7)
+        })
+        public void example(){
+
+        }
+
+    }
